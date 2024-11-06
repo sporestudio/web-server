@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Acortador de URLs</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Acortador de URLs</h1>
+            
+            <form method="POST">
+                <label for="url">Introduce tu URL:</label>
+                <input type="text" id="url" name="url" placeholder="Introduce la URL aquí" required/>
+                <button type="submit">Acortar URL</button>
+            </form>
+
+        </div>
+    </body>
+</html>
