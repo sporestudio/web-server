@@ -2,14 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for
 from app import app
 import hashlib
 
-# TODO: Implement a function to redirect the short_url to the original url store in url_mapping
 
 app = Flask(__name__)
 
 # Global variables
 DOMAIN_NAME = os.getenv('DOMAIN_NAME')
 
-# Database with the short_url and its respectiive original_url
+# Database with the short_url and its respective original_url
 url_mapping = {}
 
 
