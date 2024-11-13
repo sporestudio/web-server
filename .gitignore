@@ -1,3 +1,4 @@
 shortener/
 .env
 .vagrant/
+dyndns/user.key
