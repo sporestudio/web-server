@@ -1,3 +1,21 @@
+:root {
+
+    /* Palette variables */
+
+    --main-color: #333;
+    --secondary-color: #ffffff;
+    --text-color: #141311;
+    --main-gradient: linear-gradient(135deg, #6a11cb, #2575fc);
+
+    /* Fonts variables */
+
+    --font-main: 'Poppins Thin';
+    --font-submain: 'Poppins Semibold';
+    --font-text: 'Poppins Regular';
+    --font-figure: 'Poppins Light'; 
+}
+
+
 body {
     font-family: Arial, sans-serif;
     display: flex;
@@ -5,7 +23,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f4f4f4;
+    background-color: var(--main-color);
 }
 
 .container {
