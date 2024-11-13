@@ -1,5 +1,6 @@
 shortener/
 url_shortener/templates/index.bak
+test.py
 .env
 .vagrant/
 dyndns/user.key
