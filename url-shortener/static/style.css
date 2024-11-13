@@ -1,0 +1,58 @@
+:root {
+
+    /* Palette variables */
+
+    --main-color: #333;
+    --secondary-color: #ffffff;
+    --text-color: #141311;
+    --main-gradient: linear-gradient(135deg, #6a11cb, #2575fc);
+
+    /* Fonts variables */
+
+    --font-main: 'Poppins Thin';
+    --font-submain: 'Poppins Semibold';
+    --font-text: 'Poppins Regular';
+    --font-figure: 'Poppins Light'; 
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: var(--main-color);
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
