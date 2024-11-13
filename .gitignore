@@ -1,4 +1,5 @@
 shortener/
+url_shortener/templates/index.bak
 .env
 .vagrant/
 dyndns/user.key
