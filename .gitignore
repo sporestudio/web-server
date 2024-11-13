@@ -2,3 +2,4 @@ shortener/
 .env
 .vagrant/
 dyndns/user.key
+dyndns/update_url
