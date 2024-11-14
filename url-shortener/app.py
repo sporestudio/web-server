@@ -14,24 +14,15 @@ DOMAIN_NAME = os.getenv('DOMAIN_NAME')
 
 
 def shortener_url(original_url):
-    short_url = None
-    while not short_url:
-        short_url = hashlib.sha256(original_url.encode()).hexdigest()[:6]
-        dns_query_url = f"https://dns.google/resolve?name={short_url}.{DOMAIN_NAME}&type=TXT"
+    return hashlib.sha256(original_url.encode()).hexdigest()[:6]
 
-        reponse = requests.get(dns_query_url)
-        response_data = reponse.json()
-        if not reponse.status_code == 200 and 'Answer' in response_data:
-            return short_url
-        
-            
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         original_url = request.form['url']
         short_url = shortener_url(original_url) 
-        if not short_url: return "Error creating short URL."
+        
         if create_txt_record(short_url, original_url):
             url_shortener = f"http://url.{DOMAIN_NAME}/{short_url}"
             return render_template('index.html', short_url=url_shortener, original_url=original_url)
