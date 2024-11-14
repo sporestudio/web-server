@@ -1,27 +1,27 @@
-## Provisioner image ##
+# syntax=docker/dockerfile:1.4
+FROM --platform=$BUILDPLATFORM python:3.10-alpine AS builder
 
-# build
-FROM python:3.9-slim
+WORKDIR /code
 
-WORKDIR /app
+COPY requirements.txt /code
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip3 install -r requirements.txt
 
-COPY requirements.txt /app/
+COPY . /code
 
+ENTRYPOINT ["python3"]
+CMD ["app.py"]
 
-# installing necssary dependencies #
-RUN pip install --no-cache-dir -r requirements.txt
+FROM builder as dev-envs
 
-# Copy all the app #
-COPY . /app
+RUN <<EOF
+apk update
+apk add git bash
+EOF
 
-
-# Port where will run flask app #
-EXPOSE 5000
-
-
-# Variable to production environment #
-ENV FLASK_ENV=production
-
-
-# Defining default command to run the app #
-CMD ["python", "app.py"]
+RUN <<EOF
+addgroup -S docker
+adduser -S --shell /bin/bash --ingroup docker vscode
+EOF
+# install Docker tools (cli, buildx, compose)
+COPY --from=gloursdocker/docker / /
