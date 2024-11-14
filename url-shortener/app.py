@@ -14,17 +14,26 @@ DOMAIN_NAME = os.getenv('DOMAIN_NAME')
 
 
 def shortener_url(original_url):
-    return hashlib.sha256(original_url.encode()).hexdigest()[:6]
+    short_url = None
+    while not short_url:
+        short_url = hashlib.sha256(original_url.encode()).hexdigest()[:6]
+        dns_query_url = f"https://dns.google/resolve?name={short_url}.{DOMAIN_NAME}&type=TXT"
 
+        reponse = requests.get(dns_query_url)
+        response_data = reponse.json()
+        if not reponse.status_code == 200 and 'Answer' in response_data:
+            return short_url
+        
+            
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         original_url = request.form['url']
         short_url = shortener_url(original_url) 
-        
+        if not short_url: return "Error creating short URL."
         if create_txt_record(short_url, original_url):
-            url_shortener = f"https://{DOMAIN_NAME}/{short_url}"
+            url_shortener = f"http://url.{DOMAIN_NAME}/{short_url}"
             return render_template('index.html', short_url=url_shortener, original_url=original_url)
         else:
             return "Error creating DNS TXT record", 500
@@ -42,7 +51,7 @@ def redirect_url(short_url):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
 
 
 
