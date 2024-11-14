@@ -1,0 +1,18 @@
+services:
+  dyndns:
+    build: ./dyndns
+    container_name: dyndns
+    depends_on: 
+      - web
+
+  web:
+    image: httpd:latest
+    container_name: web
+    env_file:
+      - .env
+    volumes:
+      - ./web/htdocs:/usr/local/apache2/htdocs
+      - ./web/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    ports:
+      - 8080:80
+      - 4433:443
