@@ -13,6 +13,18 @@ services:
     volumes:
       - ./web/htdocs:/usr/local/apache2/htdocs
       - ./web/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./web/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
     ports:
       - 8080:80
       - 4433:443
+
+  url-shortener:
+    build: 
+      context: ./url-shortener
+      target: builder
+    volumes:
+      - .env:/code/.env
+    stop_signal: SIGINT
+    container_name: url-shortener
+    expose:
+      - 5000
