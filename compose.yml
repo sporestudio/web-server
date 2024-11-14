@@ -1,3 +1,7 @@
+volumes:
+  certs:
+    external: true
+
 services:
   dyndns:
     build: ./dyndns
@@ -14,6 +18,7 @@ services:
       - ./web/htdocs:/usr/local/apache2/htdocs
       - ./web/httpd.conf:/usr/local/apache2/conf/httpd.conf
       - ./web/httpd-vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+      - certs:/etc/letsencrypt
     ports:
       - 8080:80
       - 4433:443
@@ -22,9 +27,9 @@ services:
     build: 
       context: ./url-shortener
       target: builder
-    volumes:
-      - .env:/code/.env
     stop_signal: SIGINT
     container_name: url-shortener
+    env_file:
+      - .env
     expose:
       - 5000
