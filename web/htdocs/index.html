@@ -4,11 +4,88 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <meta http-equiv="Content-Type" content="text/html"/>
-        <title>spore studio</title>
-        <link rel="stylesheet" href=""/>
+        <title>sporestudio</title>
+        <link rel="stylesheet" href="styles/style.css"/>
     </head>
     <body>
-        <h1>Welcome to spore studio site</h1>
-        <p>Haz clic <a href="http://url.sporestudio.me">aquí</a> para acceder a la aplicación.</p>
+        <header class="header">
+            <div class="nav-container" id="top">
+                <div class="logo-container">
+                    <a href="index.html">
+                        <img src="assets/logo/logo.png" alt="spore-logo" width="67px" height="67px"/>
+                    </a>
+                </div>
+                <!--SECTIONS AND NAVIGATION-->
+                <nav>
+
+                    <!--Burguer menu-->
+                    <input type="checkbox" id="menu-toggle" class="menu-toggle">
+                    <label for="menu-toggle" class="menu-icon"><img src="assets/icons/bg-menu.png" alt="bg-menu" width="40px" height="40px"/></label>
+
+                    <ul class="nav-menu">
+                        <li class="nav-item"><a href="index.html" class="nav-bar-link">HOME</a></li>
+                        <li class="nav-item"><a href="https://url.sporestudio.me" class="nav-bar-link">URL SHORTENER</a></li>
+                        <li class="nav-item"><a href="https://downs.sporestudio.me" class="nav-bar-link">WEB DOWNLOADER</a></li>
+                        <li class="nav-item"><a href="contact.html" class="nav-bar-link">CONTACT</a></li>
+                        <li class="nav-item"> <!-- mostrará una pequeña bandera para cambiar el idioma del sitio web -->
+                            <a class="nav-link" href="index.html">
+                                <img src="assets/flags/flag-uk.jpg" class="lang-selector" alt="bandera de Reino Unido" width="26px" height="18px"/>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index-es.html">
+                                <img src="assets/flags/flag-sp.jpg" class="lang-selector" id="lang-selected" alt="bandera de España" width="26px" height="18px"/>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main>
+
+             <!--main section-->
+             <section class="hall-container">
+                <div class="index-title">
+                    <h1>Spore<br>Studio</h1>
+                    <h3>Welcome to my website.</h3>
+                </div>
+                <div class="main-image">
+                    <img src="assets/logo/logo.png" alt="main-image"/>
+                </div>
+            </section>
+
+            <section class="container-section">
+                <h2>Projects</h2>
+                <div class="title-his">
+                    <div class="flex-container">
+                        <div class="img-container">
+                            <img src="assets/images/bitmap/index/historia1-index.png" alt="image-history1"/>
+                        </div>
+                        <div class="img-container">
+                            <img src="assets/images/bitmap/index/historia2-index.png" alt="image-history2"/>
+                        </div>
+                        <div class="img-container">
+                            <img src="assets/images/bitmap/index/historia3-index.png" alt="image-history3" width="1000px" height="800px"/>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        <!--Footer-->
+        <footer>
+            <div class="footer-container">
+                <div class="logo-container-footer">
+                    <img src="assets/logo/logo.png" alt="logo-sporestudio" width="20px" height="20px"/>
+                    <h3>© Spore Studio </h3>
+                </div>
+                <div class="footer-text">
+                    <span class="footer-title">LICENCIA CREATIVE COMMONS</span>
+                    <a href="https://creativecommons.org/licenses/by-sa/3.0/es/" target="_blank">
+                        <img src="assets/images/vectors/licencia/license.svg" alt="licencia CC BY-SA" height="50px" id="license-img"/>
+                    </a>
+                </div>
+            </div>       
+        </footer>
     </body>
 </html>
