@@ -1,30 +1,239 @@
+/**** Theming ****/
+
+/* We can defined variables that can be modified easily */
+
 :root {
 
     /* Palette variables */
 
-    --main-color: #333;
-    --secondary-color: #ffffff;
-    --text-color: #141311;
-    --main-gradient: linear-gradient(135deg, #6a11cb, #2575fc);
+    --main-color: #0C0C0C;
+    --primary-color: #000000;
+    --secondary-color: #00272b;
+    --alternative-color: #00503f;
+    --text-color: #f0ffff;
+    --main-gradient: linear-gradient(24deg, #00272b, #00503f);
 
     /* Fonts variables */
 
-    --font-main: 'Poppins Thin';
-    --font-submain: 'Poppins Semibold';
+    --font-main: 'Larken DEMO bold';  
+    --font-submain: 'Poppins Thin';
+    --font-header: 'Poppins Semibold';
     --font-text: 'Poppins Regular';
     --font-figure: 'Poppins Light'; 
 }
 
 
+/* Styles for the navigation bar */
+
+.nav-container {
+    /*background-color: var(--primary-color);*/
+    display: flex;
+    justify-content: space-between;
+    margin: auto 0;
+    background-color: var(--main-color);
+
+    position: sticky;
+    top: 0;
+}
+
+.logo-container {
+    width: auto;
+    height: auto;
+    padding: 20px 20px;
+    margin-left: 15px;
+}
+
+
+.header-img img {
+    width: 100%;
+    height: auto; /* This config make the header img responsive */
+}
+
+
+.nav-menu{
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    margin-top: 6%;
+    margin-right: 40px;
+    width: fit-content;
+}
+
+.nav-menu a {
+    text-decoration: none;
+
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s; /* We will ensure that the transition of the animation resulting from the gradient has a smooth curve. */
+}
+
+.nav-menu a:hover, a:focus {
+    background-size: 100% 2px;
+}
+
+
+.sub-nav-items {
+    display: none; /*** it will only appear when user hovers the mouse over #sub-nav-button ***/
+    width: 10rem;
+    list-style: none;
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    box-shadow: 0px 1px 2px var(--text-color);
+}
+
+
+.nav-item, .x-nav-item, .sub-nav-item {
+    padding: 0.9em 1em;
+    width: max-content;
+}
+
+.nav-bar-link {
+    font-family: var(--font-header);
+    color: var(--text-color);
+    font-size: 0.9em;
+}
+
+
+.subnav-bar-link {
+    font-family: var(--font-text);
+    color: var(--text-color);
+    font-size: 0.7em;
+}
+
+
+.sub-nav-button:hover > .sub-nav-items { /*** displays sub-nav menu whenever the mouse hovers over #sub-nav-button ***/
+    display: block;
+    position: absolute;
+}
+
+
+.menu-toggle, .menu-icon {
+    display: none;
+}
+
+
+.lang-selector {
+    border-radius: 5px;
+    opacity: 0.3;
+}
+
+
+.lang-selector:hover {
+    opacity: 1;
+    transition: background 0.6s ease, color 0.6s ease;
+}
+
+
+.nav-link {
+    font-family: var(--font-figure);
+    color: var(--text-color);
+}
+
+
+
 body {
     font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     margin: 0;
     background-color: var(--main-color);
 }
+
+
+/* Main style container. Here we have the main one column distribution */
+
+.container-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 2%;  
+} 
+
+
+.container-section h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.container-section h2 {
+    background-color: var(--primary-color);
+    height: auto;
+    width: auto;
+    padding: 60px 60px;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2%;
+}
+
+
+
+.stretch-section {
+    gap: 5%;
+}
+
+
+.stretch-container {
+    margin-bottom: 2%;
+}
+
+
+/* Flexbox */
+
+.flex-container {
+    display:flex;
+    justify-content: space-between; /* Elements will display in flex mode */
+}
+
+
+.flex-container h2 {
+    margin: 0 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--primary-color);
+    height: 20%;
+    width: 20%;
+    padding: 2% 2%;
+    border-radius: 10px;
+}
+
+
+
+
+/* Styles related to text boxes */
+
+.text-container {
+    background-color: var(--primary-color);
+    height: 60%;
+    width: 50em;
+    padding: 60px 60px;
+    border-radius: 10px;
+}
+
+ .text-container h3 {
+    font-family: var(--font-submain);
+    font-size: .8em;
+    padding: 10px 0px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.text-container p {
+    font-size: .8em;
+}
+
 
 .container {
     text-align: center;

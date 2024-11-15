@@ -6,25 +6,60 @@
         <title>Acortador de URLs</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
     </head>
-    <body>
-        <div class="container">
-            <h1>Acortador de URLs</h1>
-            
-            <form method="POST">
-                <label for="url">Introduce tu URL:</label>
-                <input type="text" id="url" name="url" placeholder="Introduce la URL aquí" required/>
-                <button type="submit">Acortar URL</button>
-            </form>
+    <header class="header">
+        <div class="nav-container" id="top">
+            <div class="logo-container">
+                <a href="https://sporestudio.me">
+                    <img src="assets/logo/logo.png" alt="spore-logo" width="67px" height="67px"/>
+                </a>
+            </div>
+            <!--SECTIONS AND NAVIGATION-->
+            <nav>
 
-            {% if short_url %}
-                <h2>Tu url corta:</h2>
-                <p>
-                    <a href="{{ short_url }} " target="_blank">{{ short_url }}</a>
-                </p>
-                <p>
-                    URL ORIGINAL: <a href="{{ original_url }}" target="_blank">{{ original_url }}</a>
-                </p>
-            {% endif %}
+                <!--Burguer menu-->
+                <input type="checkbox" id="menu-toggle" class="menu-toggle">
+                <label for="menu-toggle" class="menu-icon"><img src="assets/icons/bg-menu.png" alt="bg-menu" width="40px" height="40px"/></label>
+
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="https://sporestudio.me" class="nav-bar-link">HOME</a></li>
+                    <li class="nav-item"><a href="https://url.sporestudio.me" class="nav-bar-link">URL SHORTENER</a></li>
+                    <li class="nav-item"><a href="https://downs.sporestudio.me" class="nav-bar-link">WEB DOWNLOADER</a></li>
+                    <li class="nav-item"><a href="sites/en/contact.html" class="nav-bar-link">CONTACT</a></li>
+                    <li class="nav-item"> <!-- mostrará una pequeña bandera para cambiar el idioma del sitio web -->
+                        <a class="nav-link" href="index.html">
+                            <img src="assets/flags/flag-uk.jpg" class="lang-selector" alt="bandera de Reino Unido" width="26px" height="18px"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index-es.html">
+                            <img src="assets/flags/flag-sp.jpg" class="lang-selector" id="lang-selected" alt="bandera de España" width="26px" height="18px"/>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
+    </header>
+    <body>
+        <section class="container-section stretch-section">
+            <div class="container">
+                <h1>Acortador de URLs</h1>
+                
+                <form method="POST">
+                    <label for="url">Introduce tu URL:</label>
+                    <input type="text" id="url" name="url" placeholder="Introduce la URL aquí" required/>
+                    <button type="submit">Acortar URL</button>
+                </form>
+    
+                {% if short_url %}
+                    <h2>Tu url corta:</h2>
+                    <p>
+                        <a href="{{ short_url }} " target="_blank">{{ short_url }}</a>
+                    </p>
+                    <p>
+                        URL ORIGINAL: <a href="{{ original_url }}" target="_blank">{{ original_url }}</a>
+                    </p>
+                {% endif %}
+            </div>
+        </section>
     </body>
 </html>
