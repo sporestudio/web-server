@@ -25,7 +25,7 @@ run_certbot:
 		certonly --webroot \
 		--email ${SERVER_ADMIN} --agree-tos --no-eff-email \
 		--webroot-path=/data/letsencrypt \
-		-d ${DOMAIN_NAME} -d www.sporestudio.me -d url.sporestudio.me
+		-d ${DOMAIN_NAME} -d www.sporestudio.me -d url.sporestudio.me -d downs.sporestudio.me
 
 stop_temp_apache:
 	@docker stop apache_temp
