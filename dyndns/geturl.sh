@@ -7,7 +7,8 @@ output=$(curl -X "POST" "https://api.hosting.ionos.com/dns/v1/dyndns" \
         "domains": [
             "sporestudio.me",
             "www.sporestudio.me",
-            "url.sporestudio.me"
+            "url.sporestudio.me",
+            "downs.sporestudio.me"
         ],
         "description": "Dynamic DNS"
     }') 
