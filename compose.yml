@@ -33,3 +33,12 @@ services:
       - .env
     expose:
       - 5000
+
+  web-downloader:
+    build:
+      context: ./web-downloader
+      target: builder
+    stop_signal: SIGINT
+    container_name: web-downloader
+    expose:
+      - 5001
