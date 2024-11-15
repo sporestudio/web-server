@@ -1,0 +1,195 @@
+/* styles.css */
+
+:root {
+    --main-color: #222;
+    --primary-color: #cecfd1;
+    --secondary-color: #00272b;
+    --alternative-color: #00503f;
+    --text-color: #141311;
+    --main-gradient: linear-gradient(24deg, #00272b, #00503f);
+
+    /* Fonts variables */
+
+    --font-main: 'Larken DEMO bold';  
+    --font-submain: 'Poppins Thin';
+    --font-header: 'Poppins Semibold';
+    --font-text: 'Poppins Regular';
+    --font-figure: 'Poppins Light'; 
+}
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+
+body {
+    background-color: #1c1c1c; 
+    color: #ffffff; 
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 0 auto; 
+}
+
+.header, .footer {
+    background-color: #2e2e2e; 
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px; 
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-header img {
+    width: 50px;
+    height: 50px;
+}
+
+.lang-selector img {
+    width: 24px;
+    height: 24px;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+}
+
+.title-form-container {
+    display: block;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 12%;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 2%;
+}
+
+.title h1 {
+    font-family: var(--font-header);
+    margin: 0;
+    font-size: 2em;
+    color: #ffffff;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centra verticalmente los elementos dentro del contenedor */
+    background-color: #2e2e2e; 
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin: 0 auto; /* Centra horizontalmente el contenedor */
+    max-width: 400px; /* Ajusta el ancho máximo del formulario según sea necesario */
+}
+
+
+
+
+input, select, button {
+    font-family: var(--font-text);
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+
+button {
+    padding: 0.8em 1.8em;
+    border: 2px solid #17C3B2;
+    position: relative;
+    overflow: hidden;
+    background-color: transparent;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 16px;
+    transition: .3s;
+    z-index: 1;
+    font-family: inherit;
+    color: #17C3B2;
+}
+
+button::before {
+    content: '';
+    width: 0;
+    height: 300%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background: #17C3B2;
+    transition: .5s ease;
+    display: block;
+    z-index: -1;
+}
+   
+button:hover::before {
+    width: 105%;
+}
+   
+button:hover {
+    color: #111;
+}
+
+.image-index {
+    width: 100%; 
+    margin-top: 0;
+    margin-bottom: 0; 
+}
+
+.image-index img {
+    width: 100%;
+    height: auto;
+    opacity: 0.5;
+
+    margin: 0;
+}
+
+.footer {
+    background-color: #2e2e2e; 
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    color: #ffffff;
+}
+
+footer p {
+    margin: 2% auto;
+}
+
+.footer a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+
+ 
+
+
