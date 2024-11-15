@@ -1,5 +1,6 @@
-shortener/
-url_shortener/templates/index.bak
+url-shortener/shortener
+url-shortener/templates/index.bak
+web-downloader/web-down
 test.py
 .env
 .vagrant/
