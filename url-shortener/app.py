@@ -24,7 +24,7 @@ def index():
         short_url = shortener_url(original_url) 
         
         if create_txt_record(short_url, original_url):
-            url_shortener = f"http://url.{DOMAIN_NAME}/{short_url}"
+            url_shortener = f"https://url.{DOMAIN_NAME}/{short_url}"
             return render_template('index.html', short_url=url_shortener, original_url=original_url)
         else:
             return "Error creating DNS TXT record", 500
