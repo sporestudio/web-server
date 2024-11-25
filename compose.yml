@@ -1,6 +1,7 @@
 volumes:
   prometheus_data:
   grafana_data:
+  jenkins_home:
   certs:
     external: true
 
@@ -85,3 +86,18 @@ services:
       - 3000
     volumes:
       - grafana_data:/var/lib/grafana
+
+  jenkins:
+    image: jenkins/jenkins:2.346.1-lts
+    container_name: jenkins
+    user: root
+    privileged: true
+    restart: unless-stopped
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock # Allow Jenkins to excute containers inside its pipeline
+    ports:
+      - 8081:8080
+      - 50000:50000
+    
+    
