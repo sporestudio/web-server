@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <meta name="description" content="Youtube downloader"/>
         <link rel="icon" type="image/svg" href="static/static/assets/images/favicon.png"/>
-        <link rel="stylesheet" type="text/CSS" href="static/style.css"/>
+        <link rel="stylesheet" type="text/CSS" href="../static/style.css"/>
         <title>Spore Youtube Downloader</title>
     </head>
     <body>
@@ -15,7 +15,7 @@
             <div class="nav-container" id="top">
                 <div class="logo-container">
                     <a href="https://sporestudio.me">
-                        <img src="assets/logo/logo.png" alt="spore-logo" width="67px" height="67px"/>
+                        <img src="../static/assets/logo/logo.png" alt="spore-logo" width="67px" height="67px"/>
                     </a>
                 </div>
                 <!--SECTIONS AND NAVIGATION-->
@@ -29,48 +29,52 @@
                         <li class="nav-item"><a href="https://sporestudio.me" class="nav-bar-link">HOME</a></li>
                         <li class="nav-item"><a href="https://url.sporestudio.me" class="nav-bar-link">URL SHORTENER</a></li>
                         <li class="nav-item"><a href="https://downs.sporestudio.me" class="nav-bar-link">WEB DOWNLOADER</a></li>
-                        <li class="nav-item"><a href="sites/en/contact.html" class="nav-bar-link">CONTACT</a></li>
+                        <li class="nav-item"><a href="https://sporestudio.me/contact.html" class="nav-bar-link">CONTACT</a></li>
                         <li class="nav-item"> <!-- mostrará una pequeña bandera para cambiar el idioma del sitio web -->
                             <a class="nav-link" href="index.html">
-                                <img src="assets/flags/flag-uk.jpg" class="lang-selector" alt="bandera de Reino Unido" width="26px" height="18px"/>
+                                <img src="../static/assets/flags/flag-uk.jpg" class="lang-selector" alt="bandera de Reino Unido" width="26px" height="18px"/>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="index-es.html">
-                                <img src="assets/flags/flag-sp.jpg" class="lang-selector" id="lang-selected" alt="bandera de España" width="26px" height="18px"/>
+                                <img src="../static/assets/flags/flag-sp.jpg" class="lang-selector" id="lang-selected" alt="bandera de España" width="26px" height="18px"/>
                             </a>
                         </li>
                     </ul>
                 </nav>
             </div>
         </header>
-        <div class="grid-container">
-            <main>
-                <div class="title-form-container">
-                    <div class="title">
-                        <h1>Spore YouTube Downloader</h1>
-                    </div>
-                    <div class="form">
-                        <form action="/download" method="post">
-                            <input type="text" name="url" placeholder="Enter a YouTube url..." required/>
-                            <select name="quality" id="qlt">
-                                <option value="highest">Highest Resolution</option>
-                                <option value="lowest">Lowest Resolution</option>
-                                <option value="audio">Audio Only</option>
-                            </select>
-                            <button type="submit">Download</button>
-                        </form>
-                    </div>
+        <main>
+            <div class="title-form-container">
+                <div class="title">
+                    <h1>Spore YouTube Downloader</h1>
                 </div>
-                <div class="image-index">
-                    <img src="static/assets/images/altern-logo-pos.png" alt="index-image" width="1000px" height="800px"/>
+                <div class="form">
+                    <form action="/download" method="post">
+                        <input type="text" name="url" placeholder="Enter a YouTube url..." required/>
+                        <select name="quality" id="qlt">
+                            <option value="highest">Highest Resolution</option>
+                            <option value="lowest">Lowest Resolution</option>
+                            <option value="audio">Audio Only</option>
+                        </select>
+                        <button type="submit">Download</button>
+                    </form>
                 </div>
-            </main>
-            <footer class="footer">
-                <p>Este trabajo está licenciado bajo <a rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero v1.0 Universal</a>.</p>
-                <img src="static/assets/images/license.svg" alt="ccreative-commons">
-                <p>Para ver una copia de esta licencia, visita <a rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/">http://creativecommons.org/publicdomain/zero/1.0/</a> o envía una carta a Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.</p>
-            </footer>            
-        </div>
+            </div>
+        </main>
+        <footer>
+            <div class="footer-container">
+                <div class="logo-container-footer">
+                    <img src="../static/assets/logo/logo.png" alt="logo-sporestudio" width="20px" height="20px"/>
+                    <h3>© Spore Studio </h3>
+                </div>
+                <div class="footer-text">
+                    <span class="footer-title">LICENCIA CREATIVE COMMONS</span>
+                    <a href="https://creativecommons.org/licenses/by-sa/3.0/es/" target="_blank">
+                        <img src="../static/assets/licencia/license.svg" alt="licencia CC BY-SA" height="50px" id="license-img"/>
+                    </a>
+                </div>
+            </div> 
+        </footer>            
     </body>
 </html>

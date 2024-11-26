@@ -4,13 +4,13 @@
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Acortador de URLs</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+        <link rel="stylesheet" href="../static/style.css"/>
     </head>
     <header class="header">
         <div class="nav-container" id="top">
             <div class="logo-container">
                 <a href="https://sporestudio.me">
-                    <img src="assets/logo/logo.png" alt="spore-logo" width="67px" height="67px"/>
+                    <img src="../static/assets/logo/logo.png" alt="spore-logo" width="67px" height="67px"/>
                 </a>
             </div>
             <!--SECTIONS AND NAVIGATION-->
@@ -24,15 +24,15 @@
                     <li class="nav-item"><a href="https://sporestudio.me" class="nav-bar-link">HOME</a></li>
                     <li class="nav-item"><a href="https://url.sporestudio.me" class="nav-bar-link">URL SHORTENER</a></li>
                     <li class="nav-item"><a href="https://downs.sporestudio.me" class="nav-bar-link">WEB DOWNLOADER</a></li>
-                    <li class="nav-item"><a href="sites/en/contact.html" class="nav-bar-link">CONTACT</a></li>
+                    <li class="nav-item"><a href="https://sporestudio.me/contact.html" class="nav-bar-link">CONTACT</a></li>
                     <li class="nav-item"> <!-- mostrará una pequeña bandera para cambiar el idioma del sitio web -->
                         <a class="nav-link" href="index.html">
-                            <img src="assets/flags/flag-uk.jpg" class="lang-selector" alt="bandera de Reino Unido" width="26px" height="18px"/>
+                            <img src="../static/assets/flags/flag-uk.jpg" class="lang-selector" alt="bandera de Reino Unido" width="26px" height="18px"/>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index-es.html">
-                            <img src="assets/flags/flag-sp.jpg" class="lang-selector" id="lang-selected" alt="bandera de España" width="26px" height="18px"/>
+                            <img src="../static/assets/flags/flag-sp.jpg" class="lang-selector" id="lang-selected" alt="bandera de España" width="26px" height="18px"/>
                         </a>
                     </li>
                 </ul>
