@@ -65,35 +65,10 @@
 /* When the width of our screen is a minimum of 900 px, this style will be displayed. */
 
 @media only screen and (min-width: 900px) {
-    
-    /* Body settings */
-
-    body {
-        background-color: var(--main-color);
-    }
 
 
-    /* Config referent to the layout design using grid */
-
-    .grid-container{
-        display: grid;
-        gap: 3em;
-        grid-template-columns: 1fr 1fr 1fr 1fr; 
-        grid-template-areas: 
-        'header header header header'
-        'header header header header'
-        'main main main main'
-        'main main main main'
-        'main main main main'
-        'main main main main'
-        'footer footer footer footer'; /* Columns and rows for the grid */
-    }
 
     /**** All the rules referent to the header and nav bar ****/
-
-   header{
-        grid-area: header;
-    }
 
 
     /* Styles for the navigation bar */
@@ -374,6 +349,17 @@
     .text-container {
         margin: auto 5%;
     }
+    
+
+    .container {
+        text-align: center;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+    }
 
 
    
@@ -414,36 +400,6 @@
         color: var(--main-color);
     }
 
-
-    /* Index automatic scroll button */
-
-
-    .scroll-button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        
-    }
-
-    
-    .scroll {
-        background-color: var(--secondary-color);
-        border-radius: 40px;
-        border: none;
-
-        transition: background 0.6s ease, color 0.6s ease; /* smooth transition for the hover pseudoclass */;
-        cursor: pointer;
-    }
-
-
-    .scroll:hover {
-        background: var(--alternative-color);
-    }
-
-    .icon-scroll {
-        padding: 30%;
-    }
 
 
     /* Some styles for the contact on index and contact site */
@@ -493,33 +449,7 @@
     }
 
 
-    /* index carousel styles */
 
-    .carousel {
-        display: flex;
-        width: 100%;
-        height: 33%;
-    }
-
-
-    .carousel img {
-        width: 0;
-        flex-grow: 1;
-        object-fit: cover;
-        opacity: .8;
-        transition: .5s ease;
-    }
-
-    .carousel img:hover {
-        cursor: crosshair;
-        width: 30%;
-        opacity: 1;
-        filter: contrast(120%);
-    }
-
-    .scroll-subtitule {
-        display: none;  /* It is necessary for the subtitle not to be displayed in desktop mode. */
-    } 
 
 
     /* Config related to footer */
@@ -663,9 +593,6 @@
         flex-direction: column;   
     }
 
-    .scroll-button {
-        display: none;
-    }
 
     .container-section {
         display: flex;
