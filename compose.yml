@@ -97,7 +97,7 @@ services:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock # Allow Jenkins to excute containers inside its pipeline
     expose:
-      - 8080
+      - 8081
       - 50000
     
     
