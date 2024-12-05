@@ -708,7 +708,7 @@ body {
 h1 {
     font-family: var(--font-main);
     color: var(--text-color);
-    font-size: 7rem;
+    font-size: 4rem;
 }
 
 h2 {
