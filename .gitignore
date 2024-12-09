@@ -2,7 +2,15 @@ url-shortener/shortener
 url-shortener/templates/index.bak
 web-downloader/web-down
 test.py
+
+# Ignore globar variables with sensitive info 
 .env
-.vagrant/
+
 dyndns/user.key
 dyndns/update_url
+
+# Ignore __pycache__ directories
+__pycache__/
+
+# Ignore Python bytecode files
+*.pyc
