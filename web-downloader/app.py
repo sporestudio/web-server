@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, send_file
-from pytube import YouTube
+from pytubefix import YouTube
 import os
 
 
@@ -30,7 +30,9 @@ def down_video():
             return "Invalid quality selected"
     
         output_path = stream.download()
-        return send_file(output_path, as_attachment=True, download_name=f"{yt.title}.{stream.subtype}")
+        response = send_file(output_path, as_attachment=True, download_name=f"{yt.title}.{stream.subtype}")
+        os.remove(output_path)
+        return response
     except Exception as e:
         return f"An error occurred: {str(e)}"
     
