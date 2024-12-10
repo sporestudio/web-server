@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Acortador de URLs</title>
+        <title>URLs shortener</title>
         <link rel="stylesheet" href="../static/style.css"/>
     </head>
     <header class="header">
@@ -25,7 +25,7 @@
                     <li class="nav-item"><a href="https://url.sporestudio.me" class="nav-bar-link">URL SHORTENER</a></li>
                     <li class="nav-item"><a href="https://downs.sporestudio.me" class="nav-bar-link">WEB DOWNLOADER</a></li>
                     <li class="nav-item"><a href="https://sporestudio.me/contact.html" class="nav-bar-link">CONTACT</a></li>
-                    <li class="nav-item"> <!-- mostrará una pequeña bandera para cambiar el idioma del sitio web -->
+                    <li class="nav-item">
                         <a class="nav-link" href="index.html">
                             <img src="../static/assets/flags/flag-uk.jpg" class="lang-selector" alt="bandera de Reino Unido" width="26px" height="18px"/>
                         </a>
@@ -42,21 +42,21 @@
     <body>
         <section class="container-section stretch-section">
             <div class="container">
-                <h1>Acortador de URLs</h1>
+                <h1>URLs shortener</h1>
                 
                 <form method="POST">
-                    <label for="url">Introduce tu URL:</label>
-                    <input type="text" id="url" name="url" placeholder="Introduce la URL aquí" required/>
-                    <button type="submit">Acortar URL</button>
+                    <label for="url">Enter your URL:</label>
+                    <input type="text" id="url" name="url" placeholder="Enter the URL here" required/>
+                    <button type="submit">shortener URL</button>
                 </form>
     
                 {% if short_url %}
-                    <h2>Tu url corta:</h2>
+                    <h2>Your short URL:</h2>
                     <p>
                         <a href="{{ short_url }} " target="_blank">{{ short_url }}</a>
                     </p>
                     <p>
-                        URL ORIGINAL: <a href="{{ original_url }}" target="_blank">{{ original_url }}</a>
+                        ORIGINAL URL: <a href="{{ original_url }}" target="_blank">{{ original_url }}</a>
                     </p>
                 {% endif %}
             </div>
