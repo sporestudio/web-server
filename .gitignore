@@ -5,6 +5,12 @@ web-downloader/ytdown
 url-shortener/templates/index.bak
 test.py
 .env
-.vagrant/
+
 dyndns/user.key
 dyndns/update_url
+
+# Ignore all pycache directories
+__pycache__/
+
+# Ignore .pyc files globally
+*.pyc
