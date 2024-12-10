@@ -286,8 +286,6 @@
     }
 
 
-
-
     /* Styles related to text boxes */
 
     .text-container {
@@ -362,8 +360,6 @@
     }
 
 
-   
-
     /* Styles related to the buttons */
 
 
@@ -382,24 +378,6 @@
         padding: 2%;
         border: none;
     }
-
-
-    .button:hover {
-        background: var(--text-color);
-    }
-
-
-    #index-button2 {
-        font-family: var(--font-header);
-        color: var(--primary-color);
-    }
-
-
-
-   .button:hover #index-button2 {
-        color: var(--main-color);
-    }
-
 
 
     /* Some styles for the contact on index and contact site */
