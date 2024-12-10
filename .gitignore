@@ -1,6 +1,8 @@
+# Ignore virtual enviroments
 url-shortener/shortener
+web-downloader/ytdown
+
 url-shortener/templates/index.bak
-web-downloader/web-down
 test.py
 .env
 .vagrant/
