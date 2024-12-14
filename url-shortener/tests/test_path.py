@@ -9,4 +9,4 @@ def client():
 def test_home_path(client):
     response = client.get("/")
     assert response.status_code == 200
-    assert b"Acortador de URLs" in response.data
+    assert b"URLs shortener" in response.data
