@@ -3,7 +3,7 @@
 ## Project Overview
 
 Automated deployment of a web server made with Docker containers. The server is composed by a main domain with the main page of the web, and serveral subdomains used for two aplications: **an url shortener and a youtube video and audio downloader**. 
-We have another two subdomain, one of these for the grafana monitoring interface and another one for the jenkins panel administration.
+We have another two subdomains, one of these for the grafana monitoring interface and another one for the jenkins administration panel.
 
 ## Structure
 
@@ -78,19 +78,16 @@ We have another two subdomain, one of these for the grafana monitoring interface
 
 The required dependecies for deploy the project are:
 
-- Docker
-- Python
-- docker-composed
-- make
+- **Docker**
+- **Python**
+- **Docker-compose**
+- **Make**
 
 ## Technologies used
 
 - **Programming Languages**: Python
-- **Frameworks**: Flask
-- **Libraries**: 
-    - **Requests**: Requests
-    - **Generate short url**: Hashlib
-    - **Testing**: Pytest
+- **Web server**: Apache
+- **Monitoring tools**: Grafana + Prometheus 
 
 ## Previous configurations
 
@@ -98,7 +95,15 @@ The required dependecies for deploy the project are:
 
 In this project the server will be my personal computer, which does not have a public IP, so we must map port 80 of our router with port 8080 of our machine, as well as port 443 with port 4433 of localhos to allow HTTPs traffic.
 
+<div align="center">
+    <img src="./.assets/img/router2.png">
+</div>
+
 We have to login in the router and go to the *NAT/PAD* that is usually where we can open ports (at least in Orange routers)
+
+<div align="center">
+    <img src="./.assets/img/router1.png">
+</div>
 
 #### Dynamic DNS 
 
@@ -108,7 +113,39 @@ In this case, I have purchased the domain from IONOS, so **this documentation is
 The first thing we have to do is to generate an API KEY to be able to interact with the IONOS service. To do this we have to visit the web: https://developer.hosting.ionos.es/?source=IonosControlPanel, go to the IONOS developer section and here we will find an option called manage keys.
 
 <div align="center">
-    <img src="./.assets/imgs/ionos-developer.png">
+    <img src="./.assets/img/ionos-developer.png">
+</div>
+
+Once we have our API Key we have to go the [DNS documentation section](https://developer.hosting.ionos.es/docs/dns) and authorize the service with our API Key.
+
+<div align="center">
+    <img src="./.assets/img/authorize1.png">
+</div>
+
+
+<div align="center">
+    <img src="./.assets/img/authorize2.png">
+</div>
+
+We must make a POST request with our API Key and our domains and we will receive the url in JSON format.
+
+```json
+{
+  "bulkId": "e0d3db69-19cc-449a-aca0-7fb4b69ba774",
+  "updateUrl": "https://ipv4.api.hosting.ionos.com/dns/v1/dyndns?q=YTFmN2Q5Y2VkYmQ0NDE2OWJlZDEwNDBiZDRlNTFlNTkuUTNPaWJTaG1rMnBpUVVoMUhlcDdlVWpyZ2Mxb0J0MEdsbHZrSWF6dzVlTURZMjZON2VtUlFKS1k2SFhfeEVMaEs1Y1cyRjJvV1NhcUhTajVUNVlSYlE",
+  "domains": [
+    "sporestudio.me",
+    "www.sporestudio.me"
+  ],
+  "description": "My DynamicDns"
+}
+```
+
+>[!NOTE]
+> We can obtain the update url automatically executing the geturl.sh script, you just change the fields of the API Key with your code and change my domains to yours.
+
+<div align="center">
+    <img src="./.assets/img/geturl.jpeg">
 </div>
 
 To make sure that the IP is always update we encapsulated this service in a docker container that is running cron updating the IP address every minute. We've created an image using the official Docker's Debian image where we copy the script `update.sh` to the container and a crontab will be running the script every minute.
@@ -116,6 +153,25 @@ To make sure that the IP is always update we encapsulated this service in a dock
 <div align="center">
     <img src=".assets/img/update.sh">
 </div>
+
+This script will be running in our Docker container as a service, so we've created a docker image for it.
+
+```Dockerfile
+FROM debian:12.8
+RUN apt-get update && apt-get -y install cron curl
+
+WORKDIR /app
+
+COPY update.sh update.sh
+COPY update_url update_url
+RUN chmod +x update.sh
+
+COPY cronjob /etc/cron.d/cronjob
+RUN chmod 0644 /etc/cron.d/cronjob
+RUN crontab /etc/cron.d/cronjob
+
+CMD ["cron", "-f", "/etc/cron.d/cronjob"]
+```
 
 ## Web server configuration
 
@@ -134,12 +190,12 @@ Cetbot uses the ACME (Automatic Certificate Management Enviroment)  protocol, pr
 
 2. **Validation method**: Certbot uses severals methods to complete domain validation, in our case, we're going to explain the HTTP-01 Challenge that is what we used in this project, to more info about the other methods you can check the [certbot official documentation](https://eff-certbot.readthedocs.io/en/stable/)
 
-    - **HTTP-01 Challenge**: Is a method used by Certbot and other ACME clients to validate domain ownership for SSL/TLS certificate issuance. It works by creating a unique token and placing it in a specific file (/.well-known/acme-challenge/*TOKEN*) on your server. The Certificate Authority (CA), such as Let's Encrypt, then makes an HTTP request to retrieve this file and confirm its contents. If the file is correctly served, the CA verifies that you control the domain and issues the certificate. This method requires the domain to be publicly accessible via HTTP (port 80) but is simple to automate, making it ideal for many web servers.
+    - **HTTP-01 Challenge**: Is a method used by Certbot and other ACME clients to validate domain ownership for *SSL/TLS* certificate issuance. It works by creating a unique token and placing it in a specific file (`/.well-known/acme-challenge/*TOKEN*`) on your server. The Certificate Authority (CA), such as Let's Encrypt, then makes an HTTP request to retrieve this file and confirm its contents. If the file is correctly served, the CA verifies that you control the domain and issues the certificate. This method requires the domain to be publicly accessible via HTTP (port 80) but is simple to automate, making it ideal for many web servers.
 
 3. **Certificate Issuance**:
-    - Once ownership is confirmed, Let's Encrypt issues an SSL/TLS certificate for your domain.
+    - Once ownership is confirmed, Let's Encrypt issues an *SSL/TLS* certificate for your domain.
 
-    - Certbot downloads and configures this certificate, usually placing the files in `/etc/letsencrypt/live/-yourdomain-/`.
+    - Certbot downloads and configures this certificate, usually placing the files in `/etc/letsencrypt/live/<yourdomain>/`.
 
 4. **Automatic Renewal**:
     - Certificates from Let's Encrypt are valid for 90 days.
@@ -166,7 +222,7 @@ web:
         - 4433:443
 ```
 
-As we can see we map the certs docker volume to the container directory **/etc/letsencrypt**. The certificates will be located at **/etc/letsencrypt/live/[your-domain]/fullchain.pem** and **/etc/letsencrypt/live/[your-domain]/privkey.pem**
+As we can see we map the certs docker volume to the container directory **/etc/letsencrypt**. The certificates will be located at `/etc/letsencrypt/live/[your-domain]/fullchain.pem` and `/etc/letsencrypt/live/[your-domain]/privkey.pem`
 
 #### Virtual hosts configuration
 
@@ -252,9 +308,95 @@ def redirect_url(short_url):
 
 ### Tests
 
+We have created some tests that guarantee the performance and uniformity of the application code. For this I have used the Pytest library that allows you to create tests for your application easily in a few lines of code.
+
+#### Path test
+
+- **Purpose**: Verifies that the application's main page is accessible and displays the correct content.
+
+- **Details**: 
+
+    - **Tested Funcionality**: Sends a GET request to the home (/) route.
+
+    - **Assertions**: 
+
+        - The HTTP status code of the response is 200, indicating the page loaded successfully.
+
+        - The response contains the text URLs shortener, confirming the main page displays the intended content.
+
+```python
+import pytest
+from app import app
+
+@pytest.fixture
+def client():
+    with app.test_client() as client:
+        yield client
+
+def test_home_path(client):
+    response = client.get("/")
+    assert response.status_code == 200
+    assert b"URLs shortener" in response.data
+```
+
+#### Short URL Genereation Test
+
+- **Purpose**: Ensures the `shortener_url` function generates valid, unique short URLs.
+
+- **Details**: 
+
+    - **Tested Funcionality**: Calls the `shortener_url` function with a sample URL as input.
+
+    - **Assertions**: 
+
+        - The generated short URL is exactly 6 characters long, as per the application's design.
+
+        - The short URL is alphanumeric, ensuring it is user-friendly and URL-compatible.
+
+```python
+import pytest
+from app import shortener_url
+
+def test_generate_short_url():
+    original_url = "https://example.com"
+    short_url = shortener_url(original_url)
+    assert len(short_url) == 6
+    assert short_url.isalnum()
+```
+
+#### How to run the tests
+
+1. Ensure that all dependencies are installed. Navigate to url-shortener direcotory and create a virtual enviroment and activate it (optional but recommended).
+
+```bash
+$ cd url-shortener/
+$ pyhton3 -m venv venv
+$ source venv/bin/activate
+```
+
+2. Then install the dependencies from the `requirements.txt` with pip.
+
+```bash
+$ pip install -r requirements
+```
+
+3. Run the tests.
+
+```bash
+$ pytest
+```
+
+<div align="center">
+    <img src=".assets/img/pytest.png">
+</div>
+
 ## YouTube downloader app
 
 ## Grafana monitoring tool
+
+To provide our server with monitor functions, we will use [Grafana](https://grafana.com/docs/grafana/latest/) in combination with [Prometheus](https://prometheus.io/docs/visualization/grafana/) and [apache_exporter](https://github.com/Lusitaniae/apache_exporter).
+
+We will use apache_exporter to scrape data from /status (mod_status) and transform this data into a format that Prometheus can understand. 
 
 ## CI/CD Pipeline with Jenkins
 
