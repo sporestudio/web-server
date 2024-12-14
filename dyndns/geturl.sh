@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 API_KEY=$(cat user.key)
 output=$(curl -X "POST" "https://api.hosting.ionos.com/dns/v1/dyndns" \
     -H "accept: application/json" \
