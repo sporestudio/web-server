@@ -83,12 +83,6 @@ The required dependecies for deploy the project are:
 - **Docker-compose**
 - **Make**
 
-## Technologies used
-
-- **Programming Languages**: Python
-- **Web server**: Apache
-- **Monitoring tools**: Grafana + Prometheus 
-
 ## Previous configurations
 
 ### Router configurations
@@ -173,6 +167,94 @@ RUN crontab /etc/cron.d/cronjob
 CMD ["cron", "-f", "/etc/cron.d/cronjob"]
 ```
 
+### Install dependencies for the project
+
+Before deploy the project we have to install the necessary dependencies for our apps, so I'm going to explain how to install dependencies for url shortener app and youtube downloader app.
+
+#### Install url-shortener dependencies
+
+We have to navigate to the app directory and create a virtual enviroment (optional but recommended).
+
+```bash
+$ cd url-shortener/
+$ python -m venv venv
+$ source venv/bin/activate
+```
+
+Now install dependencies with `pip install`.
+
+```bash
+$ pip install -r requirements.txt
+```
+
+
+#### Install web-downloader dependencies
+
+The steps to install the dependencies of web-downloader will be the same, we have to navigate to web-downloader directory and install the dependencies with `pip install`.
+
+```bash
+$ cd web-downloader/
+$ python -m venv venv
+$ source venv/bin/activate
+$ pip install -r requirements.txt
+```
+
+### Create .env file
+
+You will need to create a .env file with the following fields for the project to work.
+
+```bash
+# FLASK Configuration
+FLASK_APP=
+
+# IONOS API Configuration
+IONOS_BASE_URL=
+IONOS_API_KEY=
+
+# Apache global vars
+DOMAIN_NAME=
+GRAFANA_DOMAIN=
+DOMAIN_ID=
+SERVER_ADMIN=
+
+STATUS_PASSWD=
+
+# Variables for Jenkins configs
+JENKINS_URL=
+JENKINS_AGENT= 
+JENKINS_SECRET=
+```
+
+>[!CAUTION]
+> Never commit sensitive values to control version.
+
+
+## Deployment of the project
+
+We have several ways to deploy this project, one of them using the `Makefile` or using `docker-compose`.
+
+### Using Makefile
+
+- Deploy the server and generate/renew SSL certificates:
+
+```bash
+$ make all
+```
+
+- Deploy without generating new certificates:
+
+```bash
+$ make deploy
+```
+
+### Using docker-compose
+
+- Deploy the server building the docker images.
+
+```bash
+$ docker-compose up ---build -d
+```
+
 ## Web server configuration
 
 ### Obtain the SSL certificates via Cerbot
@@ -190,7 +272,9 @@ Cetbot uses the ACME (Automatic Certificate Management Enviroment)  protocol, pr
 
 2. **Validation method**: Certbot uses severals methods to complete domain validation, in our case, we're going to explain the HTTP-01 Challenge that is what we used in this project, to more info about the other methods you can check the [certbot official documentation](https://eff-certbot.readthedocs.io/en/stable/)
 
-    - **HTTP-01 Challenge**: Is a method used by Certbot and other ACME clients to validate domain ownership for *SSL/TLS* certificate issuance. It works by creating a unique token and placing it in a specific file (`/.well-known/acme-challenge/*TOKEN*`) on your server. The Certificate Authority (CA), such as Let's Encrypt, then makes an HTTP request to retrieve this file and confirm its contents. If the file is correctly served, the CA verifies that you control the domain and issues the certificate. This method requires the domain to be publicly accessible via HTTP (port 80) but is simple to automate, making it ideal for many web servers.
+    - **HTTP-01 Challenge**: Is a method used by Certbot and other ACME clients to validate domain ownership for *SSL/TLS* certificate issuance. It works by creating a unique token and placing it in a specific file (`/.well-known/acme-challenge/*TOKEN*`) on your server. 
+    
+        The Certificate Authority (CA), such as Let's Encrypt, then makes an HTTP request to retrieve this file and confirm its contents. If the file is correctly served, the CA verifies that you control the domain and issues the certificate. This method requires the domain to be publicly accessible via HTTP (port 80) but is simple to automate, making it ideal for many web servers.
 
 3. **Certificate Issuance**:
     - Once ownership is confirmed, Let's Encrypt issues an *SSL/TLS* certificate for your domain.
@@ -201,6 +285,15 @@ Cetbot uses the ACME (Automatic Certificate Management Enviroment)  protocol, pr
     - Certificates from Let's Encrypt are valid for 90 days.
 
     - Certbot includes a built-in renewal mechanism *(certbot renew)*, which ensures your certificates remain valid without manual intervention.
+
+So in this project to obtain the SSL certificates I've created a temporary web server listening on port 80 with the domain we want to certificate, and once the server is listening on port 80, we will run the certbot container to obtain the certificates:
+
+<div align="center">
+    <img src=".assets/img/makefile.jpeg">
+</div>
+
+> [!NOTE]
+> The certificates will be created on the container's directory `/etc/letsencrypt`, so we created a permanent docker volume called **certs** to preserve it.
 
 ### Apache configuration
 
@@ -366,7 +459,7 @@ def test_generate_short_url():
 
 #### How to run the tests
 
-1. Ensure that all dependencies are installed. Navigate to url-shortener direcotory and create a virtual enviroment and activate it (optional but recommended).
+1. Ensure that all dependencies are installed. Navigate to url-shortener directory, create a virtual enviroment and activate it (optional but recommended).
 
 ```bash
 $ cd url-shortener/
@@ -377,7 +470,7 @@ $ source venv/bin/activate
 2. Then install the dependencies from the `requirements.txt` with pip.
 
 ```bash
-$ pip install -r requirements
+$ pip install -r requirements.txt
 ```
 
 3. Run the tests.
@@ -392,13 +485,174 @@ $ pytest
 
 ## YouTube downloader app
 
+YouTube downloader application is a Python-based tool using Flask for the web server and pytubefix (I had some issues with pytube lib) for handling YouTube video downloads.
+
+### Key features
+
+- **Web Interface**: A simple page where users can paste the YouTube url and select the quality of the video or even just download the audio.
+
+- **Video Quality Options**:
+    
+    - **Highest**: Downloads the video in the highest available resolution.
+
+    - **Lowest**: Downloads the video in the lowest available resolution.
+
+    - **Audio**: Downloads only the audio stream (useful for music or podcasts).
+
+- **Temporary File Management**: Downloads the file to a temporary location and deletes it after serving it to the user `(os.remove(output_path))`.
+
+### Workflow
+
+The main function of the app uses route `/download` that defines the URL endpoint where the video download process is handled. When the user interacts with the webpage, such as by submitting a form to download a video, the browser sends a POST request to the `/download` URL.
+
+```python
+@app.route('/download', methods=['POST'])
+def down_video():
+    url = request.form['url']
+    quality = request.form['quality']
+    try:
+        yt = YouTube(url)
+
+        if quality == 'highest':
+            stream = yt.streams.get_highest_resolution()
+        elif quality == 'lowest':
+            stream = yt.streams.get_lowest_resolution()
+        elif quality == 'audio':
+            stream = yt.streams.filter(only_audio=True).first()
+        else:
+            return "Invalid quality selected"
+    
+        output_path = stream.download()
+        response = send_file(output_path, as_attachment=True, download_name=f"{yt.title}.{stream.subtype}")
+        os.remove(output_path)
+        return response
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
+```
+
+Then we extracting the user input from the form and the quality specified. As we can see we have to create a **YouTube object** for the provided URL using `pytubefix` library.
+
+We select the appropriate stream for downloading and the path of the downloaded file is stored in **output_path** varibale. To finish we send the file to the user.
+
 ## Grafana monitoring tool
 
 To provide our server with monitor functions, we will use [Grafana](https://grafana.com/docs/grafana/latest/) in combination with [Prometheus](https://prometheus.io/docs/visualization/grafana/) and [apache_exporter](https://github.com/Lusitaniae/apache_exporter).
 
 We will use apache_exporter to scrape data from /status (mod_status) and transform this data into a format that Prometheus can understand. 
 
+So we will use the official apache exporter image from **Docker Hub** to create the apache exporter container.
+
+> We will pass the URL where we allocated the `mod_status` and the authentication.
+
+```yaml
+apache-exporter: 
+    image: lusotycoon/apache-exporter
+    container_name: apache-exporter
+    depends_on:
+      - web
+    privileged: true
+    expose:
+      - 9117
+    restart: unless-stopped
+    extra_hosts:
+    - "localhost:127.17.0.1"
+    env_file:
+      - .env
+    entrypoint: /bin/apache_exporter --scrape_uri="https://sysadmin:${STATUS_PASSWD}@sporestudio.me/status?auto/"
+```
+
+Now we have to configure the `prometheus.yml` to indicate the socket of the host that have the data we want to display. In our case, *apache_exporter:9117*.
+
+> [!NOTE]
+> Since we have all the containers in the same compose file, docker-compose will resolve the addresses for us.
+
+```yaml
+# my global config
+global:
+  scrape_interval: 1m 
+
+# A scrape configuration containing exactly one endpoint to scrape:
+scrape_configs:
+  - job_name: "apache_exporter"
+    static_configs:
+      - targets: ["apache-exporter:9117"]
+```
+*prometheus.yml*
+
+Once we have this configured, we have to create the container for Prometheus service, we are using the official Prometheus image from **Docker hub**.
+
+```yaml
+prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    depends_on:
+      - apache-exporter
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    expose:
+      - 9090
+```
+
+> Prometheus will be listen in port 9090.
+
+### Grafana configuration
+
+Last but not least, we have to configure the grafana container using the official image from, again, Docker Hub.
+
+```yaml
+grafana:
+    image: grafana/grafana
+    container_name: grafana
+    expose:
+      - 3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+```
+
+I've created a virtual host for garafana to can configure it from a subdomain within my page. Here is the configuration for this subdomain:
+
+<div align="center">
+    <img src=".assets/img/grafana-domain.jpeg">
+</div>
+
+So now when we visit https://grafana.sporestudio.me we access the grafana login panel.
+
+<div align="center">
+    <img src=".assets/img/">
+</div>
+
+Once inside Grafana we have to navigate to Menu > Connections > Add new connection, and here we have to select *Prometheus* as data source.
+
+<div align="center">
+    <img src=".assets/img/">
+</div>
+
+> Successful connection.
+
+<div align="center">
+    <img src=".assets/img/">
+</div>
+
+After complete the connection, we can create our dashboard with the apache exporter instances that we choose.
+
+<div align="center">
+    <img src=".assets/img/">
+</div>
+
 ## CI/CD Pipeline with Jenkins
+
+> [!WARNING]
+> This service is still under developoment.
+
+## Benchmarks and Tests
 
 ## License
 
