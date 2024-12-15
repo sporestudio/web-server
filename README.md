@@ -270,7 +270,7 @@ $ make deploy
 - Deploy the server building the docker images.
 
 ```bash
-$ docker-compose up ---build -d
+$ docker-compose up --build -d
 ```
 
 ## Web server configuration
