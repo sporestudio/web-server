@@ -1,9 +1,27 @@
-# Web server deployment
+# Web Server Deployment
 
 ## Project Overview
 
 Automated deployment of a web server made with Docker containers. The server is composed by a main domain with the main page of the web, and serveral subdomains used for two aplications: **an url shortener and a youtube video and audio downloader**. 
 We have another two subdomains, one of these for the **grafana monitoring interface** and another one for the **jenkins administration panel**.
+
+## Index
+
+- **Web Server Deployment**
+    - [Structure](#structure)
+    - [Key Features](#key-features)
+    - [Dependencies](#dependencies)
+    - [Previous Configurations](#previous-configurations)
+    - [Deployment](#deployment-of-the-project)
+    - [Web Server Configuration](#web-server-configuration)
+    - [Url Shortener](#url-shortener-app)
+    - [YouTube Downloader](#youtube-downloader-app)
+    - [Grafana Monitoring](#grafana-monitoring-tool)
+    - [CI/CD Pipeline](#cicd-pipeline-with-jenkins)
+    - [Benchmarks and Tests](#benchmarks-and-tests)
+    - [License](#license)
+    - [Contribute](#contribute)
+    - [Author](#author)
 
 ## Structure
 
@@ -270,7 +288,7 @@ Cetbot uses the ACME (Automatic Certificate Management Enviroment)  protocol, pr
 
     - The ACME protocol facilitates this validation process.
 
-2. **Validation method**: Certbot uses severals methods to complete domain validation, in our case, we're going to explain the HTTP-01 Challenge that is what we used in this project, to more info about the other methods you can check the [certbot official documentation](https://eff-certbot.readthedocs.io/en/stable/)
+2. **Validation method**: Certbot uses severals methods to complete domain validation, in our case, we're going to explain the HTTP-01 Challenge that is what we used in this project, to more info about the other methods you can check the [certbot official documentation](https://eff-certbot.readthedocs.io/en/stable/).
 
     - **HTTP-01 Challenge**: Is a method used by Certbot and other ACME clients to validate domain ownership for *SSL/TLS* certificate issuance. It works by creating a unique token and placing it in a specific file (`/.well-known/acme-challenge/*TOKEN*`) on your server. 
     
@@ -352,7 +370,7 @@ The url shortener app is a web service deployed as part of the self-hosted infra
 
 - **Frontend**: A minimal interface for submitting URLs, generating shortened links, and monitoring usage.
 
-- **Database**: In this case we've used the **DNS server** of IONOS as database, storing the links as **TXT type records** within the server.
+- **Database**: In this case we've used the IONOS **DNS server** as database, storing the links as **TXT type records** within the server.
 
 - **Reverse Proxy**: Managed through Apache, which handles HTTP(S) requests to the app.
 
@@ -365,7 +383,7 @@ First the users **submit a long URL** through the app interface.
     <img src=".assets/img/urlshort-interface.png">
 </div>
 
-Then we catch this long url input by the users via form through POST method. To this long url we apply a function that generates a **hash of 6 alphanumeric characters**, which will be our short url, and using the function of our library [dns_manager.py](https://github.com/sporestudio/web-server/blob/main/url-shortener/dns_manager.py), created by us, we create a **TXT record in the DNS server with the shortened url** and then print it in the index.html using the render_template function of Flask.
+Then we catch this long url input by the users via form through POST method. To this long url we apply a function that generates a **hash of 6 alphanumeric characters**, which will be our short url, and using the function of our library [dns_manager.py](https://github.com/sporestudio/web-server/blob/main/url-shortener/dns_manager.py), created by us, we create a **TXT record in the DNS server with the shortened url** and then print it in the `index.html` using the **render_template** function of Flask.
 
 ```python
 def shortener_url(original_url):
