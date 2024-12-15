@@ -784,6 +784,39 @@ $ ab -f SSL3 -c 1000 -n 10000 -A admin:{passwd} -H "Accept-Encoding: gzip, defla
 
 ### Hurl
 
+We can run a test with [hurl](https://hurl.dev/) that performs GET requests to our website and different subdomains, to check that they exist.
+
+```bash
+# Index page exists
+GET https://{{site}}/
+HTTP 200
+
+# Logo exists
+GET https://{{site}}/logo.png
+HTTP 200
+
+# Administration
+GET https://{{site}}/admin
+[BasicAuth]
+admin: asir
+
+# Status
+GET https://{{site}}/status
+[BasicAuth]
+sysadmin: risa
+
+# Url shortener subdomain
+GET https://url.{{site}}
+HTTP 200
+
+# YouTube downloader subdomain
+GET https://downs.{{site}}
+HTTP 200
+```
+
+<div align="center">
+    <img src=".assets/img/hurl-test.png">
+</div><br/>
 
 ## License
 
