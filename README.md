@@ -3,7 +3,7 @@
 ## Project Overview
 
 Automated deployment of a web server made with Docker containers. The server is composed by a main domain with the main page of the web, and serveral subdomains used for two aplications: **an url shortener and a youtube video and audio downloader**. 
-We have another two subdomains, one of these for the grafana monitoring interface and another one for the jenkins administration panel.
+We have another two subdomains, one of these for the **grafana monitoring interface** and another one for the **jenkins administration panel**.
 
 ## Structure
 
@@ -169,7 +169,7 @@ CMD ["cron", "-f", "/etc/cron.d/cronjob"]
 
 ### Install dependencies for the project
 
-Before deploy the project we have to install the necessary dependencies for our apps, so I'm going to explain how to install dependencies for url shortener app and youtube downloader app.
+Before deploy the project we have to install the necessary dependencies for our apps.
 
 #### Install url-shortener dependencies
 
@@ -201,7 +201,7 @@ $ pip install -r requirements.txt
 
 ### Create .env file
 
-You will need to create a .env file with the following fields for the project to work.
+You will need to create a `.env` file with the following fields for the project to work.
 
 ```bash
 # FLASK Configuration
@@ -485,7 +485,7 @@ $ pytest
 
 ## YouTube downloader app
 
-YouTube downloader application is a Python-based tool using Flask for the web server and pytubefix (I had some issues with pytube lib) for handling YouTube video downloads.
+**YouTube downloader** application is a Python-based tool using [Flask](https://flask.palletsprojects.com/en/stable/) for the web server and [pytubefix](https://github.com/JuanBindez/pytubefix) (I had some issues with pytube lib) for handling YouTube video downloads.
 
 ### Key features
 
@@ -538,7 +538,7 @@ We select the appropriate stream for downloading and the path of the downloaded 
 
 To provide our server with monitor functions, we will use [Grafana](https://grafana.com/docs/grafana/latest/) in combination with [Prometheus](https://prometheus.io/docs/visualization/grafana/) and [apache_exporter](https://github.com/Lusitaniae/apache_exporter).
 
-We will use apache_exporter to scrape data from /status (mod_status) and transform this data into a format that Prometheus can understand. 
+We will use apache_exporter to scrape data from **/status** (`mod_status`) and transform this data into a format that Prometheus can understand. 
 
 So we will use the official apache exporter image from **Docker Hub** to create the apache exporter container.
 
@@ -577,7 +577,7 @@ scrape_configs:
     static_configs:
       - targets: ["apache-exporter:9117"]
 ```
-*prometheus.yml*
+* *prometheus.yml*
 
 Once we have this configured, we have to create the container for Prometheus service, we are using the official Prometheus image from **Docker hub**.
 
@@ -601,7 +601,7 @@ prometheus:
       - 9090
 ```
 
-> Prometheus will be listen in port 9090.
+> *Prometheus will be listen in port 9090*.
 
 ### Grafana configuration
 
@@ -626,25 +626,30 @@ I've created a virtual host for garafana to can configure it from a subdomain wi
 So now when we visit https://grafana.sporestudio.me we access the grafana login panel.
 
 <div align="center">
-    <img src=".assets/img/">
+    <img src=".assets/img/grafana-login.png">
 </div>
 
-Once inside Grafana we have to navigate to Menu > Connections > Add new connection, and here we have to select *Prometheus* as data source.
+Once inside Grafana we have to navigate to **Menu > Connections > Add new connection**, and here we have to select *Prometheus* as data source.
+
+It is important to note that the **URL in our case is the name of the Docker container** with the prometheus service, since docker compose will resolve the IPs for us.
+
 
 <div align="center">
-    <img src=".assets/img/">
+    <img src=".assets/img/prometheus-connect.png">
+</div>
+
+Once we save and test the data source connection, we have to see a message like this:
+
+<div align="center">
+    <img src=".assets/img/successful.png">
 </div>
 
 > Successful connection.
 
-<div align="center">
-    <img src=".assets/img/">
-</div>
-
 After complete the connection, we can create our dashboard with the apache exporter instances that we choose.
 
 <div align="center">
-    <img src=".assets/img/">
+    <img src=".assets/img/grafana-data.png">
 </div>
 
 ## CI/CD Pipeline with Jenkins
