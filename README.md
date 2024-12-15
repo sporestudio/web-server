@@ -621,30 +621,35 @@ I've created a virtual host for garafana to can configure it from a subdomain wi
 
 <div align="center">
     <img src=".assets/img/grafana-domain.jpeg">
-</div>
+</div><br/>
+
 
 So now when we visit https://grafana.sporestudio.me we access the grafana login panel.
 
+
 <div align="center">
     <img src=".assets/img/grafana-login.png">
-</div>
+</div><br/>
+
 
 Once inside Grafana we have to navigate to **Menu > Connections > Add new connection**, and here we have to select *Prometheus* as data source.
+
 
 It is important to note that the **URL in our case is the name of the Docker container** with the prometheus service, since docker compose will resolve the IPs for us.
 
 
+
 <div align="center">
     <img src=".assets/img/prometheus-connect.png">
-</div>
+</div><br/>
+
 
 Once we save and test the data source connection, we have to see a message like this:
 
-<div align="center">
-    <img src=".assets/img/successful.png">
-</div>
 
-> Successful connection.
+<img src=".assets/img/successful.png">
+
+> *Successful connection*.
 
 After complete the connection, we can create our dashboard with the apache exporter instances that we choose.
 
@@ -658,6 +663,127 @@ After complete the connection, we can create our dashboard with the apache expor
 > This service is still under developoment.
 
 ## Benchmarks and Tests
+
+### Apache Benchmark
+
+[Apache Benchmark](https://httpd.apache.org/docs/2.4/programs/ab.html) was used to evaluate server's performance. Several tests have been applied to the main page and its paths.
+
+#### 100 clients and 1000 requets
+
+With the *-k* flag:
+
+- **sporestudio.me/**
+
+```bash
+$ ab -f SSL3 -k -c 100 -n 1000 -H "Accept-Encoding: gzip, deflate" https://sporestudio.me
+```
+
+<div align="center">
+    <img src=".assets/img/test1-ab.png">
+</div>
+
+
+<div align="center">
+    <img src=".assets/img/test-ab22.png">
+</div><br/>
+
+
+- **sporestudio/admin**
+
+```bash
+$ ab -f SSL3 -k -c 100 -n 1000 -A admin:{passwd} -H "Accept-Encoding: gzip, deflate" https://sporestudio.me/admin
+```
+
+<div align="center">
+    <img src=".assets/img/admin-ab.png">
+</div><br/>
+
+
+Without *-k* flag:
+
+- **sporestudio.me/**
+
+```bash
+$ ab -f SSL3 -c 100 -n 1000 -H "Accept-Encoding: gzip, deflate" https://sporestudio.me
+```
+
+<div align="center">
+    <img src=".assets/img/nok-ab.png">
+</div><br/>
+
+- **sporestudio/admin**
+
+```bash
+$ ab -f SSL3 -c 100 -n 1000 -A admin:{passwd} -H "Accept-Encoding: gzip, deflate" https://sporestudio.me/admin
+```
+
+<div align="center">
+    <img src=".assets/img/nok-admin.png">
+</div><br/>
+
+
+#### 1000 clients and 10000 requests
+
+With *-k* flag:
+
+- **sporestudio.me/**
+
+```bash
+$ ab -f SSL3 -k -c 1000 -n 10000 -H "Accept-Encoding: gzip, deflate" https://sporestudio.me
+```
+
+
+<div align="center">
+    <img src=".assets/img/ab-test5.png">
+</div><br/>
+
+
+- **sporestudio/admin**
+
+```bash
+$ ab -f SSL3 -k -c 1000 -n 10000 -A admin:{passwd} -H "Accept-Encoding: gzip, deflate" https://sporestudio.me/admin
+```
+
+<div align="center">
+    <img src=".assets/img/admin-abtest5.png">
+</div><br/>
+
+
+Without *-k* flag:
+
+- **sporestudio.me/**
+
+```bash
+$ ab -f SSL3 -c 1000 -n 10000 -H "Accept-Encoding: gzip, deflate" https://sporestudio.me
+```
+
+
+<div align="center">
+    <img src=".assets/img/nok-1000.png">
+</div><br/>
+
+
+- **sporestudio/admin**
+
+```bash
+$ ab -f SSL3 -c 1000 -n 10000 -A admin:{passwd} -H "Accept-Encoding: gzip, deflate" https://sporestudio.me/admin
+```
+
+<div align="center">
+    <img src=".assets/img/admin-nok1000.png">
+</div><br/>
+
+
+#### Conclusions
+
+- We can see that if we enable the Keep-Alive connections (*-k*), tests significantly improves performance.
+
+- Adding headers helped reduce overall bandwidth usage but didn’t entirely mitigate server overload.
+
+- The test with 100 clients concurrency shows the highest Requests per Second and the lowest Time per Request, indicating improved efficiency at lower concurrency levels. 
+
+### Hurl
+
 
 ## License
 
