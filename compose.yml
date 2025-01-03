@@ -81,7 +81,7 @@ services:
       - grafana_data:/var/lib/grafana
 
   jenkins:
-    image: jenkins/jenkins:2.414.3-jdk17
+    image: jenkins/jenkins:2.491-jdk21
     container_name: jenkins
     user: root
     privileged: true
@@ -100,7 +100,7 @@ services:
       - .env
     environment:
       - JENKINS_URL=${JENKINS_URL}
-      - JENKINS_AGENT_NAME=${JENKINS_URL}
+      - JENKINS_AGENT_NAME=${JENKINS_AGENT}
       - JENKINS_SECRET=${JENKINS_SECRET}
     volumes:
       - jenkins_agent:/home/jenkins/agent
