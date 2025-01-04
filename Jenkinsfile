@@ -2,14 +2,19 @@ pipeline {
     agent any
 
     enviroment {
-        PYHTON = '/usr/bin/python3'
+        PYTHON = '/usr/bin/python3'
         VENV_DIR = 'venv'
     }
 
     stages {
         stage('checkout') {
             steps {
-                git https://github.com/sporestudio/web-server/tree/main/url-shortener
+                git 'https://github.com/sporestudio/web-server.git'
+                script {
+                    dir('url-shortener') {
+                        echo "Working inside the url-shortener directory"
+                    }
+                }
             }
         }
         stage('set ip Python enviroment') {
