@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
-                git 'https://github.com/sporestudio/web-server.git'
+                git branch: 'main', url: 'https://github.com/sporestudio/web-server.git'
                 script {
                     dir('url-shortener') {
                         echo "Working inside the url-shortener directory"
@@ -45,8 +45,7 @@ pipeline {
 
     post {
         always {
-            // Destroy virtual enviroment after exec
-            sh 'deactivate'
+            echo 'Pipeline completed.'
         }
     }
 }
