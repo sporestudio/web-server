@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    enviroment {
+    environment {
         PYTHON = '/usr/bin/python3'
         VENV_DIR = 'venv'
     }
