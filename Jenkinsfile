@@ -29,15 +29,20 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 script {
-                    sh 'pip install -r requirements.txt'
+                    sh '''
+                    . venv/bin/activate
+                    pip install -r requirements.txt
+                    '''
                 }
             }
         }
         stage('run test') {
             steps { 
                 script {
-                    // exec test with pytest
-                    sh 'pytest --maxfail=1 --disable-warnings -q'
+                    sh '''
+                    . venv/bin/activate
+                    pytest --maxfail=1 --disable-warnings -q
+                    '''
                 }
             }
         }
