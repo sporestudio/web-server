@@ -6,6 +6,10 @@ pipeline {
         VENV_DIR = 'venv'
     }
 
+    triggers {
+        githubPush()
+    }
+
     stages {
         stage('checkout') {
             steps {
