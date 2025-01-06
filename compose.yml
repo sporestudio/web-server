@@ -94,8 +94,8 @@ services:
       - 50000
 
   jenkins-agent:
-    image: jenkins/inbound-agent
-    container_name: jenkins-agent
+    build: ./jenkins-agent
+    container_name: jenkins-agent 
     env_file:
       - .env
     environment:
